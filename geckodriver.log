@@ -4312,3 +4312,5 @@ JavaScript error: resource://gre/modules/LoginManagerChild.jsm, line 194: NS_ERR
 [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
 [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
 [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
