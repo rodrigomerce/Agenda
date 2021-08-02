@@ -200,7 +200,6 @@ def VerificaProvas():
                     "Nenhuma prova programada para UNIVESP",
                     parse_mode='Markdown')
     
-
 def MensagemInicial():
   bot.sendMessage(
       chat_id,
