@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="MeAgebda" title="MeAgebda" src=".github/bot.jpg width="220px" />
+  <img alt="MeAgebda" title="MeAgebda" src=".github/bot.png width="220px" />
 </h1>
 
 <p align="center">
