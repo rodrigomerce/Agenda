@@ -1,3 +1,4 @@
+import keep_alive
 import time
 from datetime import datetime
 import telepot
@@ -25,6 +26,8 @@ channel_id = "-1001595806705"
 chat_ids = [
   '333563564','1051745745'
 ]
+
+
 
 
 def enviar():
@@ -86,15 +89,17 @@ def handle(msg):
   global chat_id
   content_type, chat_type, chat_id = telepot.glance(msg)
   content_type = telepot.glance(msg)
+  global response
   response = bot.getUpdates()
   manutencao = False
   send1 = msg['text'][0:500]
   print(send1)
   if send1:
     text1 = send1
-    if text1 == "/start":
+    if text1[0:6] == "/start":
+      print("MensagemInicial")
       MensagemInicial()
-    if text1[1:7] == "Provas":
+    elif text1[1:7] == "Provas":
       VerificaProvas()
     elif text1[1:7] == "Agenda":
       Selecionar()
@@ -104,6 +109,7 @@ def handle(msg):
     elif text1[1:7] == "Ativos":
       Ativos()
     else:
+      print("InserirDados")
       Inserir(str(text1[0:500]))
       Selecionar()
 
@@ -116,7 +122,7 @@ MessageLoop(bot, handle).run_as_thread()
 from selenium.webdriver.firefox.options import Options
 
 options = Options()
-options.headless = True
+#options.headless = True
 driver = webdriver.Firefox(options=options)
 
 def ItensDeletar():
@@ -203,7 +209,7 @@ def VerificaProvas():
 def MensagemInicial():
   bot.sendMessage(
       chat_id,
-      'Bem vindo',
+      'Bem vindo(a) '+str(response[0][u'message'][u'from'].get(u'first_name'))+"\n\nPara registrar uma nova tarefa basta me enviar por escrito;\nUtilize os botões para:\n     Verificar sua agenda\n     Verificar suas provas\n     Verificar os valores dos seus ativos\n     Deletar tarefas da agenda",
       reply_markup=ReplyKeyboardMarkup(keyboard=[[
           KeyboardButton(text=emoji.emojize(":calendar:Agenda")),
           KeyboardButton(text=emoji.emojize(":open_book:Provas")),
@@ -214,6 +220,7 @@ def MensagemInicial():
 
 HoraLembrete = '17:47:00'
 HoraLembrete = '17:47:02'
+
 
 while True:
   Agora = datetime.now(timezone('Brazil/East'))
