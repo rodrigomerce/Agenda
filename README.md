@@ -39,5 +39,3 @@ O MeAgenda é uma aplicação de agenda, onde utilizo para gravar minha lista de
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](Agenda/.github/LICENSE.md) para mais detalhes.
 
 ---
-
-Feito com ♥ by Rocketseat :wave: [Participe da nossa comunidade!](https://discordapp.com/invite/gCRAFhc)
