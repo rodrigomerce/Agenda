@@ -127,6 +127,8 @@ def handle(msg):
       senha = text1[6:500]
     elif text1[0:4] == 'Del:':
       Deletar(text1[4:7])
+    elif text1[0:10] == 'Atividades':
+      VerificaAtividades()
     else:
       Inserir(str(text1[0:500]))
       Selecionar()
@@ -142,7 +144,7 @@ from selenium.webdriver.firefox.options import Options
 
 
 options = Options()
-options.headless = True
+#options.headless = True
 driver = webdriver.Firefox(options=options)
 
 def ItensDeletar():
@@ -194,6 +196,31 @@ def Looop():
         Valores = "*ATENÇÃO*\n\nValor do DODGE :*R$" + str(valor) + ", valor bom para a venda*\n"
         bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
     time.sleep(3600)
+
+
+def VerificaAtividades():
+  VerificaProvas()
+  bot.sendMessage(chat_id, "Verificando suas atividades", parse_mode="Markdown")
+  driver.get("https://ava.univesp.br/ultra/stream")
+  time.sleep(2)
+  cli = driver.find_element_by_id("agree_button").click()
+  try:
+    driver.find_element_by_class("button-1").click()
+  except:
+    pass
+  time.sleep(2)
+  cli = driver.find_element_by_id("sou-container").click()
+  time.sleep(10)
+  a = driver.find_elements_by_xpath("//ul[@class='activity-feed']//a")
+  #for b in driver.find_elements_by_xpath("//a/following-sibling::b"):
+  time.sleep(15)
+  print("foi")
+  a = driver.find_elements_by_xpath("//ul[@class='activity-feed']//a")
+  texto =""
+  for b in driver.find_elements_by_xpath("//ul[@class='activity-feed']//a"):
+    texto = texto + b.text +"\n"
+    print(b.text)
+  bot.sendMessage(chat_id, texto, parse_mode="Markdown")
 
 def VerificaProvas():
   if senha == "":
@@ -278,8 +305,8 @@ senha = my_secret
 while True:
   Agora = datetime.now(timezone('Brazil/East'))
   HoraAgora = Agora.strftime("%H:%M:%S")
-  print(HoraAgora)
-  print(HoraLembrete)
+  #print(HoraAgora)
+  #print(HoraLembrete)
   if HoraAgora >= HoraLembrete and HoraAgora <= HoraLembrete:
     for chat_id in chat_ids:
       chat_id = chat_id
