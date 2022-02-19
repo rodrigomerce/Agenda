@@ -1,6 +1,6 @@
 import keep_alive
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -176,26 +176,56 @@ def Ativos():
   driver.get("https://dolarhoje.com/dogecoin-hoje/")
   valor = driver.find_element_by_id("nacional").get_attribute('value')
   Valores = Valores + "Valor do DODGE :*R$" + str(valor) + "*\n"
+ 
+
+  driver.get("http://ri.santosbrasil.com.br/")
+  valor = driver.find_element_by_id("tabela-cotacoes")
+  id = valor.text.find('R$')
+  valor = valor.text[id+2:id+7]
+  Valores = Valores + "Valor do STBP3 :*R$" + str(valor) + "*\n"
   bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
 
 
 def Looop():
   while loop == True:
-    valor = 0
-    driver.get("https://dolarhoje.com/iota/")
-    valor = driver.find_element_by_id("nacional").get_attribute('value')
-    if (float(valor.replace(',', '.')) >= 10.50):
-      for chat_id in chat_ids:
-        Valores = "*ATENÇÃO*\n\nValor da IOTA :*R$" + str(valor) + ", valor bom para a venda*\n"
-        bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
+    weekday_name = ["SEG", "TER", "QUA", "QUI", "SEX", "SAB", "DOM"]
+    Agora = datetime.now()
+    wkday = Agora.weekday()
+    #VERIFICA SE NÃO ESTAMOS NO FIM DE SEMANA
+    if weekday_name[wkday] != "SAB" and weekday_name[wkday] != "DOM":
+      #VERIFICA SE HORÁRIO ESTA ENTRE AS 10 E 19 | MERCADO ABERTO
+      if datetime.now().time() >= datetime.strptime(
+                        str("10:00:00"), '%H:%M:%S').time() and datetime.now().time() <= datetime.strptime(
+                        str("19:00:00"), '%H:%M:%S').time():
 
-    driver.get("https://dolarhoje.com/dogecoin-hoje/")
-    valor = driver.find_element_by_id("nacional").get_attribute('value')
-    if (float(valor.replace(',', '.')) >= 1.95):
-      for chat_id in chat_ids:
-        Valores = "*ATENÇÃO*\n\nValor do DODGE :*R$" + str(valor) + ", valor bom para a venda*\n"
-        bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
-    time.sleep(3600)
+        valor = 0
+        driver.get("https://dolarhoje.com/iota/")
+        valor = driver.find_element_by_id("nacional").get_attribute('value')
+        if (float(valor.replace(',', '.')) >= 10):
+          for chat_id in chat_ids:
+            Valores = "*ATENÇÃO*\n\nValor da IOTA :*R$" + str(valor) + ", valor bom para a venda*\n"
+            bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
+
+        driver.get("https://dolarhoje.com/dogecoin-hoje/")
+        valor = driver.find_element_by_id("nacional").get_attribute('value')
+        if (float(valor.replace(',', '.')) >= 1.95):
+          for chat_id in chat_ids:
+            Valores = "*ATENÇÃO*\n\nValor do DODGE :*R$" + str(valor) + ", valor bom para a venda*\n"
+            bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
+
+        driver.get("http://ri.santosbrasil.com.br/")
+        valor = driver.find_element_by_id("tabela-cotacoes")
+        id = valor.text.find('R$')
+        valor = valor.text[id+2:id+7]
+        if (float(valor.replace(',', '.')) >= 7.25):
+          for chat_id in chat_ids:
+            Valores = "*ATENÇÃO*\n\nValor do STBP3 :*R$" + str(valor) + ", valor bom para a venda*\n"
+            bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
+        elif(float(valor.replace(',', '.')) <= 6.90):
+          for chat_id in chat_ids:
+            Valores = "*ATENÇÃO*\n\nValor do STBP3 :*R$" + str(valor) + ", valor bom para a compra*\n"
+            bot.sendMessage(chat_id, Valores, parse_mode="Markdown")
+    time.sleep(300)
 
 
 def VerificaAtividades():
@@ -290,8 +320,11 @@ def MensagemInicial():
               text=emoji.emojize(":counterclockwise_arrows_button:Loop")),
       ]]))
 
-HoraLembrete = '17:47:00'
-HoraLembrete = '17:47:02'
+tarde1 = '17:47:00'
+tarde2 = '17:47:02'
+
+manha1 = '08:47:00'
+manha2 = '08:47:02'
 
 global loop
 loop = True
@@ -307,7 +340,11 @@ while True:
   HoraAgora = Agora.strftime("%H:%M:%S")
   #print(HoraAgora)
   #print(HoraLembrete)
-  if HoraAgora >= HoraLembrete and HoraAgora <= HoraLembrete:
+  if (HoraAgora >= tarde1 and HoraAgora <= tarde2):
+    for chat_id in chat_ids:
+      chat_id = chat_id
+      VerificaProvas()
+  if (manha1 >= tarde1 and HoraAgora <= manha2):
     for chat_id in chat_ids:
       chat_id = chat_id
       VerificaProvas()
